@@ -2,7 +2,7 @@ import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 import InfiniteScroll from 'infinite-scroll';
-import { GetPixabayApi } from './getPixabay';
+import { GetPixabayApi } from './getPixabay.js';
 
 Notify.init ({
     position: 'center-top',
@@ -13,6 +13,7 @@ Notify.init ({
 
 const galleryRef = document.querySelector('.gallery');
 const formRef = document.querySelector('.search-form');
+const simpleLightbox = new SimpleLightbox('.gallery a');
 
 formRef.addEventListener('submit', onFormSubmit);
 
@@ -50,14 +51,26 @@ function makeGalleryMarkup(searchedImages) {
 
 function renderGallery(searchedImages) {
     galleryRef.insertAdjacentHTML('beforeend', makeGalleryMarkup(searchedImages));
+    simpleLightbox.refresh();
 }
 
 async function onFormSubmit(evt) {
     evt.preventDefault();
+    clearGalleryMarkup();
     const request = evt.target.elements.searchQuery.value.trim();
-    console.log(request);
-    const { hits } = await getPixabayApi.fetchImages();
+    if(!request) return Notify.info('Please, enter something for search');
+    GetPixabayApi.searchQuery1 = request;
+    const { hits, totalHits } = await getPixabayApi.fetchImages();
+    if(!totalHits) {
+        return Notify.warning('Sorry, there are no images matching your search query. Please try again.');
+    }
+    Notify.success(`Hooray! We found ${totalHits} images.`)
     renderGallery(hits);
+    evt.target.reset();
+}
+
+function clearGalleryMarkup() {
+    galleryRef.innerHTML = '';
 }
 
 // webformatURL - ссылка на маленькое изображение для списка карточек.
