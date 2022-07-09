@@ -65,11 +65,9 @@ async function onFormSubmit(evt) {
     evt.preventDefault();
     clearGalleryMarkup();
     getPixabayApi.resetPage();
+    const request = evt.target.elements.searchQuery.value.trim();
     const infScroll = new InfiniteScroll(galleryRef, {
-        path: function () {
-            const params = `?key=${API_KEY}&q=${this.searchQuery}&image_type=photo&orientation=horizontal&safesearch=truekk&page=${this.page}&per_page=${40}`;
-            return axios.defaults.baseURL + params;
-        },
+        path: await getPixabayApi.fetchImages(),
         scrollThreshold: 0,
         responseBody: 'json',
         status: '.page-load-status',
@@ -79,7 +77,6 @@ async function onFormSubmit(evt) {
         dataCheckerAndRender(body);
     });
     infScroll.pageIndex = 1;
-    const request = evt.target.elements.searchQuery.value.trim();
     if(!request) return Notify.info('Please, enter something for search');
     GetPixabayApi.searchQuery1 = request;
     try{
