@@ -21,7 +21,7 @@ const simpleLightbox = new SimpleLightbox('.gallery a', {
     captionDelay: 300,
 });
 const getPixabayApi = new GetPixabayApi();
-let request = null;
+// let request = null;
 const API_KEY = '28465620-b99d2f18707b881a5a8144a5c';
 
 formRef.addEventListener('submit', onFormSubmit);
@@ -65,7 +65,7 @@ async function onFormSubmit(evt) {
     evt.preventDefault();
     clearGalleryMarkup();
     getPixabayApi.resetPage();
-    request = evt.target.elements.searchQuery.value.trim();
+    const request = evt.target.elements.searchQuery.value.trim();
     console.log(request);
     const infScroll = new InfiniteScroll(galleryRef, {
         path: await getPixabayApi.fetchImages(),
@@ -79,7 +79,7 @@ async function onFormSubmit(evt) {
     });
     infScroll.pageIndex = 1;
     if(!request) return Notify.info('Please, enter something for search');
-    GetPixabayApi.searchQuery1 = request;
+    getPixabayApi.searchQuery1 = request;
     try{
         const { hits, totalHits } = await getPixabayApi.fetchImages();
         if(!totalHits) {
