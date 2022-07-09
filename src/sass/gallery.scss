@@ -36,17 +36,18 @@ img {
     margin-left: auto;
     margin-right: auto;
     margin-top: 10px;
-    background-color: rgb(4, 0, 255);
+    margin: auto;
+    background-color: rgb(0, 255, 76);
     color: rgb(255, 255, 255);
-    border-width: 0;
+    border-width: 2px;
     border-radius: 7px;
 
     &:hover {
-        background-color: rgba(0, 102, 255, 0.719);
+        background-color: rgba(255, 217, 0, 0.719);
     }
 
     &:active {
-        background-color: rgba(0, 153, 255, 0.829);
+        background-color: rgba(255, 94, 0, 0.829);
     }
 }
 
