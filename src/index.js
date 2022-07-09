@@ -66,18 +66,18 @@ async function onFormSubmit(evt) {
     clearGalleryMarkup();
     getPixabayApi.resetPage();
     const request = evt.target.elements.searchQuery.value.trim();
-    console.log(request);
-    const infScroll = new InfiniteScroll(galleryRef, {
-        path: await getPixabayApi.fetchImages(),
-        scrollThreshold: 0,
-        responseBody: 'json',
-        status: '.page-load-status',
-        history: false,
-        });
-        infScroll.on('load', function (body) {
-        dataCheckerAndRender(body);
-    });
-    infScroll.pageIndex = 1;
+    // console.log(request);
+    // const infScroll = new InfiniteScroll(galleryRef, {
+    //     path: await getPixabayApi.fetchImages(),
+    //     scrollThreshold: 0,
+    //     responseBody: 'json',
+    //     status: '.page-load-status',
+    //     history: false,
+    //     });
+    //     infScroll.on('load', function (body) {
+    //     dataCheckerAndRender(body);
+    // });
+    // infScroll.pageIndex = 1;
     if(!request) return Notify.info('Please, enter something for search');
     getPixabayApi.searchQuery1 = request;
     try{
@@ -92,7 +92,7 @@ async function onFormSubmit(evt) {
         console.log(error.message);
     }
     evt.target.reset();
-    infScroll.loadNextPage();
+//     infScroll.loadNextPage();
 }
 
 async function onLoadMoreBtnClick() {
@@ -114,10 +114,10 @@ function clearGalleryMarkup() {
     galleryRef.innerHTML = '';
 }
 
-function dataCheckerAndRender(data) {
-    page = infScroll.pageIndex - 1;
-    console.log(page);
-    totalPages = Math.ceil(data.totalHits / per_page);
+// function dataCheckerAndRender(data) {
+//     page = infScroll.pageIndex - 1;
+//     console.log(page);
+//     totalPages = Math.ceil(data.totalHits / per_page);
     // if (data.hits.length === 0) {
     //     Notify.failure(
     //     'Sorry, there are no images matching your search query. Please try again.'
@@ -129,10 +129,10 @@ function dataCheckerAndRender(data) {
     //     renderGallery(data);
     //     return;
     // }
-    if (page === totalPages) {
-        Notify.info("We're sorry, but you've reached the end of search results.");
-        renderGallery(data);
-        return;
-    }
-    renderGallery(data);
-}
+//     if (page === totalPages) {
+//         Notify.info("We're sorry, but you've reached the end of search results.");
+//         renderGallery(data);
+//         return;
+//     }
+//     renderGallery(data);
+// }

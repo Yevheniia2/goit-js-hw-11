@@ -33,12 +33,18 @@ img {
 
 .load-more {
     // display: none;
-    // margin-left: auto;
-    // margin-right: auto;
+    display: flex;
+    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
     margin-top: 10px;
-    margin: auto;
+    width: 120px;
+    height: 30px;
+    font-size: 18px;
+    font-weight: bold;
+    // margin: auto;
     background-color: rgb(0, 255, 76);
-    color: rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
     border-width: 2px;
     border-radius: 7px;
 
