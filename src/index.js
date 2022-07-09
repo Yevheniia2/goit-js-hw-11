@@ -21,7 +21,7 @@ const simpleLightbox = new SimpleLightbox('.gallery a', {
     captionDelay: 300,
 });
 const getPixabayApi = new GetPixabayApi();
-// let request = null;
+
 const API_KEY = '28465620-b99d2f18707b881a5a8144a5c';
 
 formRef.addEventListener('submit', onFormSubmit);
@@ -66,18 +66,6 @@ async function onFormSubmit(evt) {
     clearGalleryMarkup();
     getPixabayApi.resetPage();
     const request = evt.target.elements.searchQuery.value.trim();
-    // console.log(request);
-    // const infScroll = new InfiniteScroll(galleryRef, {
-    //     path: await getPixabayApi.fetchImages(),
-    //     scrollThreshold: 0,
-    //     responseBody: 'json',
-    //     status: '.page-load-status',
-    //     history: false,
-    //     });
-    //     infScroll.on('load', function (body) {
-    //     dataCheckerAndRender(body);
-    // });
-    // infScroll.pageIndex = 1;
     if(!request) return Notify.info('Please, enter something for search');
     getPixabayApi.searchQuery1 = request;
     try{
@@ -92,7 +80,7 @@ async function onFormSubmit(evt) {
         console.log(error.message);
     }
     evt.target.reset();
-//     infScroll.loadNextPage();
+    loadMoreBtnRef.classList.remove('is-hidden');
 }
 
 async function onLoadMoreBtnClick() {
