@@ -74,7 +74,7 @@ async function onFormSubmit(evt) {
     }
     getPixabayApi.searchQuery1 = request;
     try{
-        const { hits, totalHits } = await getPixabayApi.fetchImages();
+        const { total, hits, totalHits } = await getPixabayApi.fetchImages();
         totalPages = Math.ceil(totalHits / perPage); 
         if(!totalHits) {
             loadMoreBtnRef.classList.add('is-hidden');
@@ -86,7 +86,7 @@ async function onFormSubmit(evt) {
             renderGallery(hits);
             return;
         }
-        Notify.success(`Hooray! We found ${totalHits} images.`);
+        Notify.success(`Hooray! We found ${total} images.`);
         renderGallery(hits);
         simpleLightbox.refresh();
     } catch(error) {
