@@ -74,19 +74,13 @@ async function onFormSubmit(evt) {
     }
     getPixabayApi.searchQuery1 = request;
     try{
-        const { total, hits, totalHits } = await getPixabayApi.fetchImages();
-        totalPages = Math.ceil(totalHits / perPage); 
+        const { hits, totalHits } = await getPixabayApi.fetchImages();
+        // totalPages = Math.ceil(totalHits / perPage); 
         if(!totalHits) {
             loadMoreBtnRef.classList.add('is-hidden');
             return Notify.warning('Sorry, there are no images matching your search query. Please try again.');
         }
-        if (page === totalPages) {
-            loadMoreBtnRef.classList.add('is-hidden');
-            Notify.info("We're sorry, but you've reached the end of search results.");
-            renderGallery(hits);
-            return;
-        }
-        Notify.success(`Hooray! We found ${total} images.`);
+        Notify.success(`Hooray! We found ${totalHits} images.`);
         renderGallery(hits);
         simpleLightbox.refresh();
     } catch(error) {
@@ -98,6 +92,7 @@ async function onFormSubmit(evt) {
 }
 
 async function onLoadMoreBtnClick() {
+    page += 1;
     try{
     const { hits, totalHits } = await getPixabayApi.fetchImages();
     renderGallery(hits);
@@ -107,6 +102,12 @@ async function onLoadMoreBtnClick() {
     top: cardHeight * 2,
     behavior: "smooth",
 });
+    if (page * 40 > totalHits) {
+        loadMoreBtnRef.classList.add('is-hidden');
+        Notify.info("We're sorry, but you've reached the end of search results.");
+        renderGallery(hits);
+        return;
+    }
     } catch(error) {
         console.log(error.message);
     }
