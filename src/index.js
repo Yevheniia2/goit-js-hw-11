@@ -1,9 +1,7 @@
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
-import InfiniteScroll from 'infinite-scroll';
 import { GetPixabayApi } from './getPixabay.js';
-import axios from "axios";
 
 Notify.init ({
     position: 'center-top',
@@ -69,17 +67,21 @@ async function onFormSubmit(evt) {
     evt.preventDefault();
     clearGalleryMarkup();
     getPixabayApi.resetPage();
-    totalPages = Math.ceil(evt.totalHits / perPage);
     const request = evt.target.elements.searchQuery.value.trim();
-    if(!request) return Notify.info('Please, enter something for search');
+    if(!request) {
+        loadMoreBtnRef.classList.add('is-hidden');
+        return Notify.info('Please, enter something for search');
+    }
     getPixabayApi.searchQuery1 = request;
     try{
         const { hits, totalHits } = await getPixabayApi.fetchImages();
-        // const totalPages = Math.ceil(data.totalHits / per_page);
+        totalPages = Math.ceil(totalHits / perPage); 
         if(!totalHits) {
+            loadMoreBtnRef.classList.add('is-hidden');
             return Notify.warning('Sorry, there are no images matching your search query. Please try again.');
         }
         if (page === totalPages) {
+            loadMoreBtnRef.classList.add('is-hidden');
             Notify.info("We're sorry, but you've reached the end of search results.");
             renderGallery(hits);
             return;
@@ -113,26 +115,3 @@ async function onLoadMoreBtnClick() {
 function clearGalleryMarkup() {
     galleryRef.innerHTML = '';
 }
-
-// function dataCheckerAndRender(data) {
-//     page = infScroll.pageIndex - 1;
-//     console.log(page);
-//     totalPages = Math.ceil(data.totalHits / per_page);
-    // if (data.hits.length === 0) {
-    //     Notify.failure(
-    //     'Sorry, there are no images matching your search query. Please try again.'
-    //     );
-    //     return;
-    // }
-    // if (page === 1) {
-    //     Notify.info(`Hooray! We found ${data.totalHits} images.`);
-    //     renderGallery(data);
-    //     return;
-    // }
-//     if (page === totalPages) {
-//         Notify.info("We're sorry, but you've reached the end of search results.");
-//         renderGallery(data);
-//         return;
-//     }
-//     renderGallery(data);
-// }

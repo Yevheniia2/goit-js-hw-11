@@ -20,6 +20,7 @@ export class GetPixabayApi {
         });
         const { data } = await axios.get(`?${params}`);
         this.incrementPage();
+        console.log(data);
         return data;
     }
     get searchQuery1() {
